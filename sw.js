@@ -1,6 +1,6 @@
 // Guarda solo la "carcasa" del ícono (página de inicio, logo y manifiesto).
 // Los datos siempre vienen en vivo desde Google Sheets; nada se guarda en el equipo.
-const CACHE = 'planilla-recaudo-v2';
+const CACHE = 'gestinmo-v3';
 const ARCHIVOS = ['./', 'index.html', 'manifest.json', 'icon-192.png', 'icon-512.png', 'apple-touch-icon.png', 'favicon-32.png', 'favicon.ico'];
 
 self.addEventListener('install', e => {
