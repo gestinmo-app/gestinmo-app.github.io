@@ -1,74 +1,78 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="utf-8">
-  <title>VIAL 360 – Gestión de Asistencia Vial</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="description" content="VIAL 360: control de servicios de asistencia vial, conductores, flota, seguridad vial (PESV), facturación y cobro.">
-  <meta name="theme-color" content="#0b2c5a">
-  <meta name="mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="apple-mobile-web-app-title" content="VIAL 360">
-  <meta property="og:title" content="VIAL 360 – Gestión de Asistencia Vial">
-  <meta property="og:description" content="Control de servicios, seguimiento en tiempo real, mayor control y seguridad, operación más eficiente.">
-  <meta property="og:image" content="https://vial-360.github.io/og-vial360.jpg">
-  <meta property="og:type" content="website">
-  <link rel="manifest" href="manifest.webmanifest">
-  <link rel="icon" href="favicon.ico" sizes="any">
-  <link rel="icon" type="image/png" href="icon-192.png">
-  <link rel="apple-touch-icon" href="apple-touch-icon.png">
-  <style>
-    html,body{margin:0;height:100%;background:#0b2c5a;overflow:hidden;font-family:Roboto,"Segoe UI",Arial,sans-serif}
-    /* la aplicación ocupa toda la pantalla */
-    #app{position:fixed;inset:0;width:100%;height:100%;border:0;background:#fff;opacity:0;transition:opacity .4s}
-    #app.lista{opacity:1}
-    /* pantalla de carga */
-    #carga{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;text-align:center;padding:24px;
-      background:linear-gradient(135deg,#0b2c5a 0%,#123f7e 60%,#1565c0 100%);color:#fff;transition:opacity .4s;z-index:2}
-    #carga.fuera{opacity:0;pointer-events:none}
-    #carga img{width:96px;height:96px;border-radius:22px;background:#fff;padding:8px;box-shadow:0 10px 30px rgba(0,0,0,.35)}
-    #carga h1{margin:4px 0 0;font-size:30px;font-style:italic;font-weight:800;letter-spacing:.5px}
-    #carga h1 span{color:#4fc3f7}
-    #carga .sub{font-size:12px;font-weight:700;letter-spacing:2px;opacity:.9}
-    .giro{width:34px;height:34px;border:4px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:g .8s linear infinite;margin-top:8px}
-    @keyframes g{to{transform:rotate(360deg)}}
-    #ayuda{display:none;max-width:360px;font-size:13.5px;line-height:1.5;opacity:.95}
-    #ayuda a{display:inline-block;margin-top:10px;background:#fff;color:#0b2c5a;text-decoration:none;font-weight:700;padding:10px 18px;border-radius:6px}
-    small{position:fixed;bottom:12px;left:0;right:0;text-align:center;font-size:11px;opacity:.6}
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>GestInmo – Gestión Inmobiliaria</title>
+
+<!-- Instalación como aplicación (Android, computador) -->
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#0B3E98">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+
+<!-- Instalación como aplicación (iPhone / iPad) -->
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="GestInmo">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+<style>
+  html,body{margin:0;height:100%;background:#0B3E98;font-family:Arial,sans-serif}
+  #app{position:fixed;inset:0;width:100%;height:100%;border:0;background:#f3f6fc;
+       padding-top:env(safe-area-inset-top)}
+  #cargando{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
+            gap:14px;background:#0B3E98;color:#FFFFFF;text-align:center;padding:24px;z-index:2;transition:opacity .3s}
+  #cargando img{width:120px;height:120px;border-radius:26px}
+  #cargando b{font-size:20px}
+  #cargando small{opacity:.8}
+  .rueda{width:30px;height:30px;border:3px solid rgba(247,162,59,.3);border-top-color:#F7A23B;border-radius:50%;animation:g 1s linear infinite}
+  @keyframes g{to{transform:rotate(360deg)}}
+  #ayuda{display:none;font-size:13px;max-width:320px;line-height:1.4}
+  #ayuda a{color:#F7A23B;font-weight:bold}
+</style>
 </head>
 <body>
-  <div id="carga">
-    <img src="icon-192.png" alt="VIAL 360">
-    <h1>VIAL <span>360</span></h1>
-    <div class="sub">GESTIÓN DE ASISTENCIA VIAL</div>
-    <div class="giro" id="giro"></div>
-    <div id="estado">Cargando…</div>
-    <div id="ayuda">¿No carga? Revise su conexión a internet o abra la aplicación directamente.<br>
-      <a id="directo" href="#" target="_top">Abrir la aplicación directamente</a></div>
-    <small>VIAL 360 · Gestión de Asistencia Vial</small>
-  </div>
-  <iframe id="app" title="VIAL 360" allow="geolocation; camera; microphone; clipboard-write; fullscreen"></iframe>
 
-  <script>
-    /* ===== CONFIGURACIÓN: enlace de la implementación de Apps Script (termina en /exec) =====
-       Apps Script › Implementar › Gestionar implementaciones › copiar "URL de la aplicación web". */
-    const APP_URL = 'PEGUE_AQUI_LA_URL_DE_LA_APLICACION_WEB';
+<div id="cargando">
+  <img src="icon-192.png" alt="">
+  <b>GestInmo</b>
+  <div class="rueda"></div>
+  <small>Cargando…</small>
+  <div id="ayuda">¿No carga? Puede que deba iniciar sesión con su cuenta de Google.
+    <br><br><a id="abrirDirecto" href="#" target="_blank" rel="noopener">Abrir la aplicación directamente</a></div>
+</div>
 
-    const carga = document.getElementById('carga'), app = document.getElementById('app');
-    const ayuda = () => { document.getElementById('ayuda').style.display = 'block'; document.getElementById('giro').style.display = 'none'; };
-    if (!/^https:\/\/script\.google\.com\/.+\/exec/.test(APP_URL)) {
-      document.getElementById('estado').textContent = 'Falta configurar el enlace de la aplicación (APP_URL en index.html).';
-      document.getElementById('giro').style.display = 'none';
-    } else {
-      document.getElementById('directo').href = APP_URL;
-      app.addEventListener('load', () => { app.classList.add('lista'); carga.classList.add('fuera'); });
-      app.src = APP_URL;
-      setTimeout(() => { if (!app.classList.contains('lista')) ayuda(); }, 15000);   // si en 15 s no cargó, muestra la ayuda
-    }
-    // instalación en el celular como aplicación (pantalla de inicio)
-    if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(() => {});
-  </script>
+<iframe id="app" title="GestInmo" allow="clipboard-write"></iframe>
+
+<script>
+  // ============================================================
+  // ÚNICO DATO QUE HAY QUE CAMBIAR:
+  // el enlace de la aplicación web de Apps Script (el que termina en /exec).
+  // Implementar → Gestionar implementaciones → copiar la URL.
+  // ============================================================
+  const URL_APP = 'https://script.google.com/macros/s/AKfycbzohVoE85rycSvXlANAp6Dw0in3WdCRi4L5IiOegI7YwgXUiwDpoSIHZOJXdUDhmy1-/exec';
+
+  const marco = document.getElementById('app');
+  const tapa = document.getElementById('cargando');
+  document.getElementById('abrirDirecto').href = URL_APP;
+
+  marco.addEventListener('load', () => {
+    tapa.style.opacity = '0';
+    setTimeout(() => tapa.style.display = 'none', 300);
+  });
+  marco.src = URL_APP;
+
+  // Si en 12 segundos no ha cargado, se ofrece abrirla directamente
+  setTimeout(() => {
+    if (tapa.style.display !== 'none') document.getElementById('ayuda').style.display = 'block';
+  }, 12000);
+
+  // Necesario para que el navegador ofrezca "Instalar aplicación"
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('sw.js').catch(() => {});
+  }
+</script>
 </body>
 </html>
