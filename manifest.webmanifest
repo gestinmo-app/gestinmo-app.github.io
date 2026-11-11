@@ -1,0 +1,17 @@
+{
+  "name": "VIAL 360 – Gestión de Asistencia Vial",
+  "short_name": "VIAL 360",
+  "description": "Control de servicios de asistencia vial, conductores, flota y seguridad vial.",
+  "lang": "es-CO",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#0b2c5a",
+  "theme_color": "#0b2c5a",
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
